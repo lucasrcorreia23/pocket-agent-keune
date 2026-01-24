@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Perfecting Voice Agent - Demo
 
-## Getting Started
+Aplicacao demo para conversas por voz com agentes ElevenLabs, com interface premium e identidade visual Perfecting.
 
-First, run the development server:
+## Stack
+
+- **Next.js 15** com App Router
+- **TypeScript**
+- **Tailwind CSS**
+- **ElevenLabs React SDK** para conversacao por voz
+
+## Funcionalidades
+
+- Conversa por voz em tempo real com agente ElevenLabs
+- Interface premium com diamante animado em SVG
+- Indicadores visuais de estado (conectado, ouvindo, falando)
+- Suporte a agentes publicos e privados (signed URL)
+- Tema escuro com cor primaria #2E63CD
+
+## Setup
+
+### 1. Instalar dependencias
+
+```bash
+npm install
+```
+
+### 2. Configurar variaveis de ambiente
+
+Edite o arquivo `.env.local`:
+
+```env
+# ElevenLabs Configuration
+ELEVENLABS_API_KEY=sua_api_key_aqui
+NEXT_PUBLIC_AGENT_ID=seu_agent_id_aqui
+
+# Se agente privado, use true
+NEXT_PUBLIC_USE_SIGNED_URL=false
+```
+
+### 3. Obter credenciais ElevenLabs
+
+1. Acesse [elevenlabs.io](https://elevenlabs.io) e crie uma conta
+2. Va em [API Keys](https://elevenlabs.io/app/settings/api-keys) e copie sua API key
+3. Va em [Conversational AI](https://elevenlabs.io/app/conversational-ai) e crie/copie seu Agent ID
+
+### 4. Executar
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Estrutura
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/
+  components/
+    conversation.tsx       # Componente de conversa ElevenLabs
+    diamond-background.tsx # Diamante SVG animado
+  api/
+    get-signed-url/
+      route.ts             # API para agentes privados
+  page.tsx                 # Pagina principal
+  layout.tsx               # Layout root
+  globals.css              # Estilos e animacoes
+```
 
-## Learn More
+## Uso
 
-To learn more about Next.js, take a look at the following resources:
+1. Acesse a aplicacao
+2. Clique em "Iniciar Conversa"
+3. Permita acesso ao microfone
+4. Fale com o agente
+5. Clique em "Encerrar Conversa" para finalizar
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Personalizacao
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Cor primaria
+Altere `#2E63CD` em `globals.css` e nos componentes
 
-## Deploy on Vercel
+### Diamante
+Edite `app/components/diamond-background.tsx` para ajustar gradientes, tamanho e animacao
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Producao
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+npm start
+```
