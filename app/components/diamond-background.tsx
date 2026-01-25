@@ -137,7 +137,10 @@ function DiamondScene() {
 export function DiamondBackground() {
   return (
     <div className="fixed inset-0 flex items-center justify-center overflow-hidden">
-      <div className="absolute w-[620px] h-[620px] bg-white rounded-full blur-[140px] opacity-70 pointer-events-none" />
+      <div className="absolute w-[760px] h-[760px] bg-[#eef5ff] rounded-full blur-[150px] opacity-80 pointer-events-none" />
+      <div className="absolute w-[980px] h-[980px] bg-[#e9f2ff] rounded-full blur-[220px] opacity-45 pointer-events-none" />
+      <div className="absolute left-0 bottom-0 h-full w-56 bg-gradient-to-r from-[#e6f0ff] to-transparent opacity-90 pointer-events-none" />
+      <div className="absolute right-0 bottom-0 h-full w-56 bg-gradient-to-l from-[#e6f0ff] to-transparent opacity-90 pointer-events-none" />
       <div className="absolute inset-0">
         <Canvas
           shadows
