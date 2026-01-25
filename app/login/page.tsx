@@ -15,7 +15,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f6f7fb]/60 flex flex-col items-center justify-center p-4 backdrop-blur-md">
+    <main className="min-h-screen flex flex-col items-center justify-center p-4">
 
       <header className="fixed top-0 left-0 right-0 z-20 px-6 py-5">
         <div className="flex items-center justify-center">
