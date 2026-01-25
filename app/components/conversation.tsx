@@ -88,6 +88,7 @@ export function Conversation() {
         const signedUrl = await getSignedUrl();
         await conversation.startSession({
           signedUrl,
+          connectionType: 'websocket',
         });
       } else {
         await conversation.startSession({

@@ -27,6 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+      </head>
       <body className={`${inter.variable} ${raleway.variable} antialiased`}>
         <div className="relative min-h-screen">
           <div className="absolute inset-0 z-0">

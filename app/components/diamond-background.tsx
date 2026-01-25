@@ -141,7 +141,7 @@ export function DiamondBackground() {
       <div className="absolute w-[980px] h-[980px] bg-[#e9f2ff] rounded-full blur-[220px] opacity-45 pointer-events-none" />
       <div className="absolute left-0 bottom-0 h-full w-56 bg-gradient-to-r from-[#e6f0ff] to-transparent opacity-90 pointer-events-none" />
       <div className="absolute right-0 bottom-0 h-full w-56 bg-gradient-to-l from-[#e6f0ff] to-transparent opacity-90 pointer-events-none" />
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 pointer-events-none">
         <Canvas
           shadows
           camera={{ position: [-3.2, 0.5, 3.5], fov: 45 }}

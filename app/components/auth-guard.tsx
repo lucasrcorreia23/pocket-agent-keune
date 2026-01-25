@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface AuthGuardProps {
@@ -10,15 +10,21 @@ interface AuthGuardProps {
 export function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const hasCheckedAuth = useRef(false);
 
   useEffect(() => {
+    // Prevenir múltiplas execuções
+    if (hasCheckedAuth.current) return;
+    hasCheckedAuth.current = true;
+
     const session = sessionStorage.getItem('perfecting_demo_session');
     if (session === 'true') {
       setIsAuthenticated(true);
     } else {
+      setIsAuthenticated(false);
       router.replace('/');
     }
-  }, [router]);
+  }, []); // Array vazio: executa apenas uma vez
 
   if (isAuthenticated === null) {
     return (
@@ -38,10 +44,10 @@ export function AuthGuard({ children }: AuthGuardProps) {
 export function useLogout() {
   const router = useRouter();
 
-  const logout = () => {
+  const logout = useCallback(() => {
     sessionStorage.removeItem('perfecting_demo_session');
     router.replace('/');
-  };
+  }, [router]);
 
   return logout;
 }
