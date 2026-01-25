@@ -16,7 +16,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
     if (session === 'true') {
       setIsAuthenticated(true);
     } else {
-      router.replace('/login');
+      router.replace('/');
     }
   }, [router]);
 
@@ -40,7 +40,7 @@ export function useLogout() {
 
   const logout = () => {
     sessionStorage.removeItem('perfecting_demo_session');
-    router.replace('/login');
+    router.replace('/');
   };
 
   return logout;
