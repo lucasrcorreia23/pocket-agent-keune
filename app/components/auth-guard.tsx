@@ -17,14 +17,15 @@ export function AuthGuard({ children }: AuthGuardProps) {
     if (hasCheckedAuth.current) return;
     hasCheckedAuth.current = true;
 
-    const session = sessionStorage.getItem('perfecting_demo_session');
-    if (session === 'true') {
+    // Verificar access_token (nome correto do token)
+    const token = localStorage.getItem('access_token');
+    if (token) {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
       router.replace('/');
     }
-  }, []); // Array vazio: executa apenas uma vez
+  }, [router]); // Array vazio: executa apenas uma vez
 
   if (isAuthenticated === null) {
     return (
@@ -45,7 +46,8 @@ export function useLogout() {
   const router = useRouter();
 
   const logout = useCallback(() => {
-    sessionStorage.removeItem('perfecting_demo_session');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('perfecting_agent_link');
     router.replace('/');
   }, [router]);
 

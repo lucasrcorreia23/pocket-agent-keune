@@ -67,11 +67,59 @@ export function Conversation() {
   });
 
   const getSignedUrl = async (): Promise<string> => {
-    const response = await fetch('/api/get-signed-url');
-    if (!response.ok) {
-      throw new Error(`Falha ao obter URL: ${response.statusText}`);
+    // Verificar se já temos o link salvo no localStorage
+    const savedLink = localStorage.getItem('perfecting_agent_link');
+    if (savedLink) {
+      return savedLink;
     }
-    const { signedUrl } = await response.json();
+
+    // Obter token do localStorage (access_token)
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      throw new Error('Token de autenticação não encontrado. Faça login novamente.');
+    }
+
+    // Obter horário do usuário no formato "HH:mm" (ex: "10:30")
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const userTime = `${hours}:${minutes}`;
+
+    // Chamar API para obter link do agente (GET com query parameter)
+    const url = `/api/get-agent-link?user_time=${encodeURIComponent(userTime)}`;
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`, // Token no header Authorization
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      
+      // Tratar erro 401 (token expirado)
+      if (response.status === 401) {
+        localStorage.removeItem('access_token');
+        throw new Error('Sessão expirada. Faça login novamente.');
+      }
+      
+      // Tratar erro 403 (sem permissão)
+      if (response.status === 403) {
+        throw new Error('Você não tem permissão para acessar o agente.');
+      }
+      
+      throw new Error(errorData.error || `Falha ao obter URL: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    const signedUrl = data.signed_url || data.link || data.agent_link || data;
+
+    // Salvar link no localStorage para reutilização
+    if (signedUrl && typeof signedUrl === 'string') {
+      localStorage.setItem('perfecting_agent_link', signedUrl);
+    }
+
     return signedUrl;
   };
 
@@ -82,20 +130,12 @@ export function Conversation() {
 
       await navigator.mediaDevices.getUserMedia({ audio: true });
 
-      const agentId = process.env.NEXT_PUBLIC_AGENT_ID;
-
-      if (process.env.NEXT_PUBLIC_USE_SIGNED_URL === 'true') {
-        const signedUrl = await getSignedUrl();
-        await conversation.startSession({
-          signedUrl,
-          connectionType: 'websocket',
-        });
-      } else {
-        await conversation.startSession({
-          agentId: agentId!,
-          connectionType: 'webrtc',
-        });
-      }
+      // Sempre usar signed URL da API Perfecting
+      const signedUrl = await getSignedUrl();
+      await conversation.startSession({
+        signedUrl,
+        connectionType: 'websocket',
+      });
     } catch (err) {
       console.error('Failed to start conversation:', err);
       if (err instanceof Error) {
